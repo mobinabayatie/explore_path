@@ -1,6 +1,6 @@
 from tkinter import ttk
 from tkinter.messagebox import WARNING
-from ttkbootstrap import Window, Label, Entry, Button, Treeview, OUTLINE, PRIMARY, INFO, SUCCESS, WARNING
+from ttkbootstrap import Window, Label, Entry, Button, Treeview, OUTLINE, PRIMARY, INFO, SUCCESS, WARNING, DANGER
 import os
 from pathlib import Path
 from datetime import datetime
@@ -10,7 +10,7 @@ from fnmatch import fnmatch
 
 window = Window(title="Explore Path App", themename="flatly")
 
-window.rowconfigure(3, weight=1)
+window.rowconfigure(4, weight=1)
 window.columnconfigure(1, weight=1)
 
 path_label = Label(window, text="Path")
@@ -182,8 +182,19 @@ search_button.grid(row=2, column=2, padx=(0, 10), pady=(0, 10), sticky="ew")
 new_folder_button = Button(window, text="New Folder", bootstyle=PRIMARY + OUTLINE, command=create_folder)
 new_folder_button.grid(row=1, column=2, padx=(0, 10), pady=(0, 10), sticky="w")
 
+def delete_file():
+    delete_file=explore_tree_view.selection()
+    for file in delete_file:
+        os.remove(file)
+
+
+    explore_path()
+
+delete_file_button=Button(window,text="Delete",bootstyle=DANGER+OUTLINE,command=delete_file)
+delete_file_button.grid(row=3, column=1, padx=(0, 10), pady=(0, 10), sticky="nsew")
+
 explore_tree_view = Treeview(window, columns=("name", "type", "size", "created", "modified", "accessed"))
-explore_tree_view.grid(row=3, column=1, padx=(0, 10), pady=(0, 10), sticky="nsew")
+explore_tree_view.grid(row=4, column=1, padx=(0, 10), pady=(0, 10), sticky="nsew")
 
 explore_tree_view.heading("#0", text="#")
 explore_tree_view.heading("#1", text="name")
